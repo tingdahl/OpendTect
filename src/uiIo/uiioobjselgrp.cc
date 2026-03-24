@@ -45,6 +45,20 @@ static bool requireIcon()
     return !icsel;
 }
 
+uiIOObjSelGrp::Setup::Setup( OD::ChoiceMode cm )
+    : choicemode_(cm)
+{}
+
+
+uiIOObjSelGrp::Setup::~Setup()
+{}
+
+
+bool uiIOObjSelGrp::Setup::isMultiChoice() const
+{
+    return ::isMultiChoice( choicemode_ );
+}
+
 
 // EntryData
 EntryData::EntryData( const MultiID& mid )
@@ -1133,7 +1147,11 @@ void uiIOObjSelGrp::fillListBox()
 
     listfld_->setEmpty();
     listfld_->addItems( dataset_.getDispNms() );
-    listfld_->resizeToContents();
+    if ( setup_.resizelbwidth_ )
+	listfld_->resizeToContents();
+    else
+	listfld_->resizeHeightToContents();
+
     if ( requireIcon() )
     {
 	const BufferStringSet& iconnm = dataset_.getIconNms();

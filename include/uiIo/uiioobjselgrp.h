@@ -112,29 +112,22 @@ public:
     mExpClass(uiIo) Setup
     {
     public:
-			Setup( OD::ChoiceMode cm=OD::ChooseOnlyOne )
-			    : choicemode_(cm)
-			    , allowreloc_(false)
-			    , allowremove_(true)
-			    , allowsetdefault_(false)
-			    , withinserters_(true)
-			    , withwriteopts_(true)
-			    , confirmoverwrite_(true) {}
-			~Setup()	{}
+			Setup(OD::ChoiceMode =OD::ChooseOnlyOne);
+			~Setup();
 
 	mDefSetupMemb(OD::ChoiceMode,choicemode);
-	mDefSetupMemb(bool,allowreloc);
-	mDefSetupMemb(bool,allowremove);
-	mDefSetupMemb(bool,allowsetdefault);
-	mDefSetupMemb(bool,withinserters);
-	mDefSetupMemb(bool,withwriteopts);
-	mDefSetupMemb(bool,confirmoverwrite);
+	mDefSetupMembInit(bool,allowreloc,false);
+	mDefSetupMembInit(bool,allowremove,true);
+	mDefSetupMembInit(bool,allowsetdefault,false);
+	mDefSetupMembInit(bool,withinserters,true);
+	mDefSetupMembInit(bool,withwriteopts,true);
+	mDefSetupMembInit(bool,confirmoverwrite,true);
+	mDefSetupMembInit(bool,resizelbwidth,true);
 	mDefSetupMemb(BufferString,withctxtfilter);
 	mDefSetupMemb(BufferStringSet,trsnotallwed);
 	//!<key can be either a translator group name or omf metadata key
 
-	inline bool	isMultiChoice() const
-			{ return ::isMultiChoice( choicemode_ ); }
+	bool		isMultiChoice() const;
     };
 
 #   define		mDefuiIOObjSelGrpConstructors(ctxtclss) \
