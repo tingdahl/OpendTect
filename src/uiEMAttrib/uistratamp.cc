@@ -260,7 +260,8 @@ bool uiStratAmpCalc::prepareProcessing()
 	}
     }
 
-    Attrib::DescSet* ads = Attrib::eDSHolder().getDescSet(false,false);
+    Attrib::DescSet* ads = Attrib::eDSHolder().getDescSet( false,
+							   !allowattributes_ );
     RefMan<Attrib::Desc> seldesc = ads->getDesc( inpfld_->attribID() );
     if ( seldesc && seldesc->isStored() )
     {
@@ -292,7 +293,8 @@ Attrib::DescSet* uiStratAmpCalc::getFromInpFld(
 		TypeSet<Attrib::DescID>& outdescids, int& nrseloutputs )
 {
     Attrib::DescID targetid = inpfld_->attribID();
-    Attrib::DescSet* ads = Attrib::eDSHolder().getDescSet(false,false);
+    Attrib::DescSet* ads = Attrib::eDSHolder().getDescSet( false,
+							   !allowattributes_ );
     RefMan<Attrib::Desc> seldesc = ads->getDesc( targetid );
     if ( seldesc )
     {
