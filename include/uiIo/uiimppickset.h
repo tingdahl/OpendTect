@@ -8,34 +8,30 @@ ________________________________________________________________________
 
 -*/
 
-#include "ioobj.h"
-#include "pickset.h"
-#include "randcolor.h"
 #include "uiiomod.h"
 #include "uidialog.h"
 #include "uigroup.h"
 
+#include "pickset.h"
+#include "randcolor.h"
+
 #include "factory.h"
 #include "multiid.h"
-#include "uicoordsystem.h"
-#include "uiioobjselgrp.h"
 
-
-class uiCheckBox;
 class uiColorInput;
 class uiComboBox;
 class uiFileInput;
-class uiGenInput;
 class uiGenInput;
 class uiIOObjSel;
 class uiLabeledComboBox;
 class uiPickPartServer;
 class uiTableImpDataSel;
-namespace Table { class FormatDesc; }
+class IOObj;
+
+namespace Coords { class uiCoordSystemSel; }
 namespace Pick { class Set; }
+namespace Table { class FormatDesc; }
 
-
-constexpr const char* sKeyImportHint()	    { return "Import Hint"; }
 
 /*! \brief Dialog for pickset selection */
 

@@ -13,6 +13,7 @@ ________________________________________________________________________
 #include "separstr.h"
 #include "uicolor.h"
 #include "uicombobox.h"
+#include "uicoordsystem.h"
 #include "uifileinput.h"
 #include "uigeninput.h"
 #include "uiioobjsel.h"
@@ -81,8 +82,8 @@ bool uiPickSetImportGroup::init()
 
 
 bool uiPickSetImportGroup::handleDuplicateNames(
-						ObjectSet<Pick::Set>& pointsets,
-					       BufferStringSet& duplicatenames )
+					ObjectSet<Pick::Set>& pointsets,
+					BufferStringSet& duplicatenames )
 {
     CtxtIOObj ctio( mIOObjContext(PickSet) );
     const IOObjContext ctxt = ctio.ctxt_;
@@ -303,9 +304,6 @@ uiSinglePickSetImportGroup::uiSinglePickSetImportGroup( uiParent* p )
     mAttachCB( filefld_->valueChanged, uiSinglePickSetImportGroup::inputChgd );
     setHAlignObj( filefld_ );
 
-    IOObjContext ctxt( mIOObjContext(PickSet) );
-    ctxt.forread_ = false;
-
     zfld_ = new uiLabeledComboBox( this, zoptions, tr("Get Z values from") );
     mAttachCB( zfld_->box()->selectionChanged,
 	       uiSinglePickSetImportGroup::formatSel );
@@ -340,6 +338,9 @@ uiSinglePickSetImportGroup::uiSinglePickSetImportGroup( uiParent* p )
 
     sep = new uiSeparator( this, "H sep" );
     sep->attach( stretchedBelow, dataselfld_ );
+
+    IOObjContext ctxt( mIOObjContext(PickSet) );
+    ctxt.forread_ = false;
 
     const auto label = uiStrings::phrOutput( uiStrings::sPicksetPolygon() );
     uiIOObjSel::Setup ioobjsetup( label );
