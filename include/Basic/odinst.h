@@ -20,23 +20,22 @@ namespace OS { class MachineCommand; }
 
 namespace ODInst
 {
+    enum class ActionType;
+
     mGlobal(Basic) const char*	sKeyHasUpdate();
     mGlobal(Basic) const char*	sKeyHasNoUpdate();
     mGlobal(Basic) const char*	sKeyODExecNm(bool addexe=false);
-    mGlobal(Basic) const char*	sKeyODInstMgrExecNm(bool addexe=false);
     mGlobal(Basic) const char*	sKeyODBatchHostsExecNm(bool addexe=false);
     mGlobal(Basic) const char*	sKeyODLicInstallExecNm(bool addexe=false);
     mGlobal(Basic) const char*	sKeyODRemSerMgrExecNm(bool addexe);
     mGlobal(Basic) const char*	sKeyODFirewallExecNm();
     mGlobal(Basic) const char*	sKeyODProgressViewerExecNm();
 
-    mGlobal(Basic) BufferString GetInstallerDir();
     mGlobal(Basic) BufferString GetRelInfoDir();
+    mGlobal(Basic) bool		HasInstaller();
     mGlobal(Basic) bool		canInstall(const char* dirnm);
-    mGlobal(Basic) void		startInstManagement();
-    mGlobal(Basic) void		startInstManagementWithRelDir(const char*);
-
-    mGlobal(Basic) void		getMachComm(const char*, OS::MachineCommand&);
+    mGlobal(Basic) void		startInstManagement(ActionType);
+    mGlobal(Basic) void		startUpdateCheck(CallBack);
     mGlobal(Basic) bool		updatesAvailable(int inited=-1);
     mDeprecated("Use updatesAvailable")
     mGlobal(Basic) bool		runInstMgrForUpdt();
@@ -45,12 +44,13 @@ namespace ODInst
     inline bool			isErrPkgVersion( const char* s )
 				{ return !s || !*s || *s == '['; }
 
-
-    enum AutoInstType		{ UseManager, InformOnly, FullAuto, NoAuto  };
+    enum class AutoInstType	{ UseManager, InformOnly, FullAuto, NoAuto  };
 				mDeclareNameSpaceEnumUtils(Basic,AutoInstType)
-    enum RelType		{ Stable, Development, PreStable,
+    enum class RelType		{ Stable, Development, PreStable,
 				  PreDevelopment, Ancient, OtherRelease };
 				mDeclareNameSpaceEnumUtils(Basic,RelType)
+    enum class ActionType { Standard, Install, Manage, Uninstall, Update,
+			    UpdateCheck };
     /*!
 	Policy: Externally, policy can be fixed using OD_INSTALLER_POLICY
 	Without OD_INSTALLER_POLICY, read/write user settings
@@ -65,13 +65,18 @@ namespace ODInst
     mGlobal(Basic) Settings&		userSettings();
 
     mGlobal(Basic) RelType		getRelType();
-    mGlobal(Basic) BufferString		getInstallerPlfDir();
 
+    mDeprecatedObs
+    mGlobal(Basic) const char*	sKeyODInstMgrExecNm(bool addexe=false);
+    mDeprecated("Use HasInstaller")
+    mGlobal(Basic) BufferString GetInstallerDir();
+    mDeprecatedObs
+    mGlobal(Basic) BufferString getInstallerPlfDir();
+    mDeprecated("Provide ActionType")
+    mGlobal(Basic) void		startInstManagement();
+    mDeprecated("Use startInstManagement")
+    mGlobal(Basic) void		startInstManagementWithRelDir(const char*);
+    mDeprecated("Use getUpdateMC")
+    mGlobal(Basic) void		getMachComm(const char*, OS::MachineCommand&);
 
 } // namespace ODInst
-
-#ifdef __mac__
-#define mInstallerDirNm "OpendTect Installer.app"
-#else
-#define mInstallerDirNm "Installer"
-#endif

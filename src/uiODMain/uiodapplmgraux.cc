@@ -585,18 +585,28 @@ bool uiUpdateInfoDlg::acceptOK( CallBacker* )
 
 void uiODApplMgrDispatcher::startInstMgr()
 {
-#ifdef __win__
-    uiString msg = tr("Please close OpendTect application and all other "
+    startInstMgr( ODInst::ActionType::Standard );
+}
+
+
+void uiODApplMgrDispatcher::startInstMgr( ODInst::ActionType typ )
+{
+    uiString msg;
+    if ( __iswin__ )
+	msg = tr("Please close OpendTect application and all other "
 		      "OpendTect processes before proceeding for"
 		      " installation/update");
-#else
-    uiString msg = tr("If you make changes to the application,\nplease "
+    else
+	msg = tr("If you make changes to the application,\nplease "
 		      "restart OpendTect for the changes to take effect.");
-#endif
 
-    uiUpdateInfoDlg dlg( par_, msg );
-    dlg.go();
-    ODInst::startInstManagement();
+    if ( typ == ODInst::ActionType::Manage || typ == ODInst::ActionType::Update)
+    {
+	uiUpdateInfoDlg dlg( par_, msg );
+	dlg.go();
+    }
+
+    ODInst::startInstManagement( typ );
 }
 
 
@@ -605,8 +615,8 @@ void uiODApplMgrDispatcher::setAutoUpdatePol()
     const ODInst::AutoInstType curait = ODInst::getAutoInstType();
     BufferStringSet options, alloptions;
     alloptions = ODInst::autoInstTypeUserMsgs();
-    options.add( alloptions.get( (int)ODInst::InformOnly) );
-    options.add( alloptions.get( (int)ODInst::NoAuto) );
+    options.add( alloptions.get( (int)ODInst::AutoInstType::InformOnly) );
+    options.add( alloptions.get( (int)ODInst::AutoInstType::NoAuto) );
 
     uiGetChoice dlg( par_, options,
 			tr("Select policy for auto-update"), true,
@@ -622,7 +632,7 @@ void uiODApplMgrDispatcher::setAutoUpdatePol()
     if ( newait != curait )
 	ODInst::setAutoInstType( newait );
 
-    if ( newait == ODInst::InformOnly )
+    if ( newait == ODInst::AutoInstType::InformOnly )
 	am_.updateCaption();
 }
 
