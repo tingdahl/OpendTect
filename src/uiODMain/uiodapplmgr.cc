@@ -2012,8 +2012,8 @@ void uiODApplMgr::posConversion()
 { dispatcher_.posConversion(); }
 void uiODApplMgr::manageShortcuts()
 { dispatcher_.manageShortcuts(); }
-void uiODApplMgr::startInstMgr()
-{ dispatcher_.startInstMgr(); }
+void uiODApplMgr::startInstMgr( ODInst::ActionType typ )
+{ dispatcher_.startInstMgr( typ ); }
 void uiODApplMgr::setAutoUpdatePol()
 { dispatcher_.setAutoUpdatePol(); }
 void uiODApplMgr::process2D3D( int opt )
@@ -2040,3 +2040,11 @@ void uiODApplMgr::showReleaseNotes( bool isonline )
 				: nullptr );
     HelpProvider::provideHelp( key );
 }
+
+
+mStartAllowDeprecatedSection
+
+void uiODApplMgr::startInstMgr()
+{ dispatcher_.startInstMgr(); }
+
+mStopAllowDeprecatedSection
