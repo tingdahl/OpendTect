@@ -101,6 +101,8 @@ public:
 			//!< nr < 0 returns last dir name
     BufferString	dirUpTo(int) const;
 			//!< nr < 0 returns last dir, including prefix
+    BufferString	dirFrom(int lvl) const;
+			//!< return the end of the filepath, starting from lvl
     BufferString	fileFrom(int level,Style s=Local) const;
     BufferString	partitionName() const;
     BufferString	rootPath() const;
