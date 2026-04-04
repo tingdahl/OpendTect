@@ -19,6 +19,7 @@ ________________________________________________________________________
 class uiAutoRangeClipDlg;
 class uiColorTableCanvas;
 class uiLineEdit;
+class uiColorTableMan;
 
 
 namespace ColTab { class Sequence; class MapperSetup; }
@@ -109,7 +110,9 @@ protected:
     void		makeSymmetrical(CallBacker*);
     void		colTabChgdCB(CallBacker*);
     void		colTabManChgd(CallBacker*);
+    void		colTabManClosedCB(CallBacker*);
     void		numberFormatChgdCB(CallBacker*);
+    void		beforeSurveyChangeCB(CallBacker*);
 
     bool		isEditable() const	{ return maxfld_; }
 };

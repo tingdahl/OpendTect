@@ -273,6 +273,7 @@ uiColTabMarkerCanvas::uiColTabMarkerCanvas( uiParent* p, ColTab::Sequence& ctab,
 
 uiColTabMarkerCanvas::~uiColTabMarkerCanvas()
 {
+    detachAllNotifiers();
     delete w2ui_;
     hp_ctabrg.removeAndDeleteParam( this );
 }

@@ -1477,7 +1477,6 @@ uiColorTableMan::uiColorTableMan( uiParent* p, ColTab::Sequence& ctab,
 					   tr("Set Transp Pts to Anchors") );
     mAttachCB( settoanchbut->activated, uiColorTableMan::setPtsToAnchSegsCB );
     settoanchbut->attach( leftOf, flipbut );
-    settoanchbut->attach( rightTo, butgrp );
 
     mAttachCB( markercanvas_->markerChanged, uiColorTableMan::markerChange );
     mAttachCB( ctab_.colorChanged, uiColorTableMan::sequenceChange );
