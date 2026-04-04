@@ -1,0 +1,515 @@
+name: opendtect
+base: core24
+version: '8.1.0'
+
+summary: Open source seismic interpretation system
+
+description: |
+  OpendTect is a free, open source seismic interpretation system and software
+  development platform. The system supports all tools needed for visualizing,
+  analyzing and interpreting 2D, 3D and 4D seismic and Ground Penetrating
+  Radar (GPR) data. OpendTect runs on Windows, macOS and Linux platforms.
+
+grade: devel
+confinement: strict
+
+platforms:
+  amd64:
+    build-on: amd64
+    build-for: amd64
+  arm64:
+    build-on: arm64
+    build-for: arm64
+
+apps:
+  opendtect:
+    command: usr/local/bin/od_snap_launcher
+    extensions: [gnome]
+    common-id: com.dgbes.opendtect
+    environment:
+      PATH: $SNAP/usr/local/bin:$SNAP/usr/local/bin/lux64/Release:$PATH
+      LD_LIBRARY_PATH: $SNAP/usr/local/qt6/lib:$LD_LIBRARY_PATH
+      # Ensure Qt finds its own plugins from the snap, not the system or
+      # gnome-platform (which carries Qt5, not Qt6).
+      QT_PLUGIN_PATH: $SNAP/usr/local/qt6/plugins
+    plugs:
+      - home
+      - network
+      - removable-media
+
+  od-batchhosts:
+    command: usr/local/bin/lux64/Release/od_BatchHosts
+    extensions: [gnome]
+    plugs: [home, network, removable-media]
+
+  od-cbvs-browse:
+    command: usr/local/bin/lux64/Release/od_cbvs_browse
+    extensions: [gnome]
+    plugs: [home, network, removable-media]
+
+  od-clusterproc:
+    command: usr/local/bin/lux64/Release/od_ClusterProc
+    extensions: [gnome]
+    plugs: [home, network, removable-media]
+
+  od-copy-seis:
+    command: usr/local/bin/lux64/Release/od_copy_seis
+    extensions: [gnome]
+    plugs: [home, network, removable-media]
+
+  od-dispmsg:
+    command: usr/local/bin/lux64/Release/od_DispMsg
+    extensions: [gnome]
+    plugs: [home, network, removable-media]
+
+  od-filebrowser:
+    command: usr/local/bin/lux64/Release/od_FileBrowser
+    extensions: [gnome]
+    plugs: [home, network, removable-media]
+
+  od-gmtexec:
+    command: usr/local/bin/lux64/Release/od_gmtexec
+    extensions: [gnome]
+    plugs: [home, network, removable-media]
+
+  od-imageviewer:
+    command: usr/local/bin/lux64/Release/od_ImageViewer
+    extensions: [gnome]
+    plugs: [home, network, removable-media]
+
+  od-isopach:
+    command: usr/local/bin/lux64/Release/od_isopach
+    extensions: [gnome]
+    plugs: [home, network, removable-media]
+
+  od-layouttest:
+    command: usr/local/bin/lux64/Release/od_layouttest
+    extensions: [gnome]
+    plugs: [home, network, removable-media]
+
+  od-madexec:
+    command: usr/local/bin/lux64/Release/od_madexec
+    extensions: [gnome]
+    plugs: [home, network, removable-media]
+
+  od-prestackmmbatch:
+    command: usr/local/bin/lux64/Release/od_PreStackMMBatch
+    extensions: [gnome]
+    plugs: [home, network, removable-media]
+
+  od-process-2dgrid:
+    command: usr/local/bin/lux64/Release/od_process_2dgrid
+    extensions: [gnome]
+    plugs: [home, network, removable-media]
+
+  od-process-2dto3d:
+    command: usr/local/bin/lux64/Release/od_process_2dto3d
+    extensions: [gnome]
+    plugs: [home, network, removable-media]
+
+  od-process-attrib:
+    command: usr/local/bin/lux64/Release/od_process_attrib
+    extensions: [gnome]
+    plugs: [home, network, removable-media]
+
+  od-process-attrib-em:
+    command: usr/local/bin/lux64/Release/od_process_attrib_em
+    extensions: [gnome]
+    plugs: [home, network, removable-media]
+
+  od-process-prestack:
+    command: usr/local/bin/lux64/Release/od_process_prestack
+    extensions: [gnome]
+    plugs: [home, network, removable-media]
+
+  od-process-segyio:
+    command: usr/local/bin/lux64/Release/od_process_segyio
+    extensions: [gnome]
+    plugs: [home, network, removable-media]
+
+  od-process-time2depth:
+    command: usr/local/bin/lux64/Release/od_process_time2depth
+    extensions: [gnome]
+    plugs: [home, network, removable-media]
+
+  od-process-velocityconv:
+    command: usr/local/bin/lux64/Release/od_process_velocityconv
+    extensions: [gnome]
+    plugs: [home, network, removable-media]
+
+  od-process-volume:
+    command: usr/local/bin/lux64/Release/od_process_volume
+    extensions: [gnome]
+    plugs: [home, network, removable-media]
+
+  od-progressviewer:
+    command: usr/local/bin/lux64/Release/od_ProgressViewer
+    extensions: [gnome]
+    plugs: [home, network, removable-media]
+
+  od-remexec:
+    command: usr/local/bin/lux64/Release/od_remexec
+    extensions: [gnome]
+    plugs: [home, network, removable-media]
+
+  od-remoteservice:
+    command: usr/local/bin/lux64/Release/od_remoteservice
+    extensions: [gnome]
+    plugs: [home, network, removable-media]
+
+  od-remoteservicemgr:
+    command: usr/local/bin/lux64/Release/od_RemoteServiceMgr
+    extensions: [gnome]
+    plugs: [home, network, removable-media]
+
+  od-screentest:
+    command: usr/local/bin/lux64/Release/od_screentest
+    extensions: [gnome]
+    plugs: [home, network, removable-media]
+
+  od-segyexaminer:
+    command: usr/local/bin/lux64/Release/od_SEGYExaminer
+    extensions: [gnome]
+    plugs: [home, network, removable-media]
+
+  od-seismmbatch:
+    command: usr/local/bin/lux64/Release/od_SeisMMBatch
+    extensions: [gnome]
+    plugs: [home, network, removable-media]
+
+  od-setup-firewall:
+    command: usr/local/bin/lux64/Release/od_Setup_Firewall
+    extensions: [gnome]
+    plugs: [home, network, removable-media]
+
+  od-stratamp:
+    command: usr/local/bin/lux64/Release/od_stratamp
+    extensions: [gnome]
+    plugs: [home, network, removable-media]
+
+  od-sysadmmain:
+    command: usr/local/bin/lux64/Release/od_sysadmmain
+    extensions: [gnome]
+    plugs: [home, network, removable-media]
+
+  od-uireportissue:
+    command: usr/local/bin/lux64/Release/od_uiReportIssue
+    extensions: [gnome]
+    plugs: [home, network, removable-media]
+
+  od-do-rmt:
+    command: usr/local/bin/od_do_rmt
+    plugs: [home, network, removable-media]
+
+  od-exec:
+    command: usr/local/bin/od_exec
+    plugs: [home, network, removable-media]
+
+  od-exec-rmt:
+    command: usr/local/bin/od_exec_rmt
+    plugs: [home, network, removable-media]
+
+  od-xterm-exec:
+    command: usr/local/bin/od_xterm_exec
+    plugs: [home, network, removable-media]
+
+  mksethdir:
+    command: usr/local/bin/mksethdir
+    plugs: [home, network, removable-media]
+
+  init-dtect-gl:
+    command: usr/local/bin/init_dtect_GL
+    plugs: [home, network, removable-media]
+
+layout:
+  /usr/bin/csh:
+    symlink: $SNAP/bin/tcsh
+
+parts:
+  qt6:
+    plugin: nil
+    source: https://download.qt.io/official_releases/qt/6.8/6.8.2/single/qt-everywhere-src-6.8.2.tar.xz
+    source-type: tar
+    override-build: |
+      set -eu
+
+      mkdir -p build
+      cd build
+
+      ../configure \
+        -prefix /usr/local/qt6 \
+        -release \
+        -opensource \
+        -confirm-license \
+        -nomake tests \
+        -nomake examples \
+        -submodules qtbase,qttools,qtsvg,qtwayland \
+        -skip qtwebengine
+
+      cmake --build . --parallel
+      DESTDIR="$CRAFT_PART_INSTALL" cmake --install .
+    build-packages:
+      - cmake
+      - ninja-build
+      - g++
+      - make
+      - perl
+      - python3
+      - pkg-config
+      - bison
+      - flex
+      - gperf
+      - libgl-dev
+      - libegl1-mesa-dev
+      - libx11-dev
+      - libx11-xcb-dev
+      - libxrandr-dev
+      - libxinerama-dev
+      - libxcursor-dev
+      - libxcomposite-dev
+      - libxdamage-dev
+      - libxext-dev
+      - libxfixes-dev
+      - libxi-dev
+      - libxrender-dev
+      - libxcb1-dev
+      - libxcb-cursor-dev
+      - libxcb-glx0-dev
+      - libxcb-icccm4-dev
+      - libxcb-image0-dev
+      - libxcb-xinput-dev
+      - libxcb-keysyms1-dev
+      - libxcb-randr0-dev
+      - libxcb-render-util0-dev
+      - libxcb-shape0-dev
+      - libxcb-shm0-dev
+      - libxcb-sync-dev
+      - libxcb-util-dev
+      - libxcb-xfixes0-dev
+      - libxcb-xinerama0-dev
+      - libxcb-xkb-dev
+      - libxkbcommon-dev
+      - libxkbcommon-x11-dev
+      - libwayland-dev
+      - wayland-protocols
+      - libfontconfig1-dev
+      - libfreetype-dev
+      - libdbus-1-dev
+      - libssl-dev
+      - libsqlite3-dev
+      - zlib1g-dev
+
+  osggeo:
+    plugin: cmake
+    source: external/osgGeo
+    source-type: local
+    override-build: |
+      set -eu
+
+      srcdir="${CRAFT_PART_SRC:-${SNAPCRAFT_PART_SRC:-$PWD}}"
+      rm -f "$srcdir/CMakeCache.txt" "$srcdir/cmake_install.cmake" "$srcdir/Makefile"
+      rm -rf "$srcdir/CMakeFiles" "$srcdir/Testing" "$srcdir/inst"
+      rm -f "$srcdir"/build*.ninja "$srcdir"/.ninja_deps "$srcdir"/.ninja_log
+
+      # Match main build CPU tuning for x86_64 while keeping arm64 portable.
+      if [ "$(uname -m)" = "x86_64" ]; then
+        export CFLAGS="${CFLAGS:+$CFLAGS }-march=x86-64-v3"
+        export CXXFLAGS="${CXXFLAGS:+$CXXFLAGS }-march=x86-64-v3"
+      fi
+
+      craftctl default
+    cmake-parameters:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DOSGGEO_USE_DEBUG_OSG=OFF
+      - -DBUILD_EXAMPLES=OFF
+      - -DCMAKE_INSTALL_PREFIX=/usr/local/osggeo
+      - -DCMAKE_INSTALL_RPATH=\$ORIGIN
+      - -DOSG_ROOT=/usr
+    build-packages:
+      - cmake
+      - g++
+      - make
+      - pkg-config
+      - libopenscenegraph-dev
+      - libgl-dev
+      - libglu1-mesa-dev
+
+  opendtect:
+    plugin: cmake
+    source: .
+    source-type: local
+    after:
+      - qt6
+      - osggeo
+
+    override-build: |
+      set -eu
+
+      # Configure git for HTTPS and disable SSH interactive prompts.
+      mkdir -p ~/.ssh
+      ssh-keyscan -t rsa,ecdsa github.com >> ~/.ssh/known_hosts 2>/dev/null || true
+      git config --global url."https://github.com/".insteadOf git://github.com/
+      git config --global url."https://github.com/".insteadOf git@github.com:
+      git config --global url."https://".insteadOf git://
+      git config --global core.sshCommand "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
+
+      # OpendTect expects PROJ docs at /usr/share/doc/proj/COPYING on install.
+      # Ubuntu's PROJ packages may only ship /usr/share/doc/*/copyright.
+      if [ ! -f /usr/share/doc/proj/COPYING ]; then
+        proj_doc_src="$(find /usr/share/doc -maxdepth 2 -type f -name copyright | grep -E '/(lib)?proj[^/]*/copyright$' | head -n1)"
+        if [ -n "$proj_doc_src" ]; then
+          mkdir -p /usr/share/doc/proj
+          cp "$proj_doc_src" /usr/share/doc/proj/COPYING
+        fi
+      fi
+
+      # Enable modern CPU tuning for x86_64 builds.
+      # Keep arm64 builds portable by not setting x86-specific flags there.
+      if [ "$(uname -m)" = "x86_64" ]; then
+        export CFLAGS="${CFLAGS:+$CFLAGS }-march=x86-64-v3"
+        export CXXFLAGS="${CXXFLAGS:+$CXXFLAGS }-march=x86-64-v3"
+      fi
+
+      # The local workspace may contain generated CMake artifacts. Because
+      # source-type is local, those files are copied into CRAFT_PART_SRC and
+      # can break the in-build osgGeo configure step with cache path mismatches.
+      srcdir="${CRAFT_PART_SRC:-${SNAPCRAFT_PART_SRC:-$PWD}}"
+      rm -f "$srcdir/CMakeCache.txt"
+      rm -rf "$srcdir/CMakeFiles" "$srcdir/CMakeScratch"
+
+      osggeo_src="$srcdir/external/osgGeo"
+      if [ -d "$osggeo_src" ]; then
+        rm -f "$osggeo_src/CMakeCache.txt" "$osggeo_src/cmake_install.cmake" "$osggeo_src/Makefile"
+        rm -rf "$osggeo_src/CMakeFiles" "$osggeo_src/Testing" "$osggeo_src/inst"
+        rm -f "$osggeo_src"/build*.ninja "$osggeo_src"/.ninja_deps "$osggeo_src"/.ninja_log
+      fi
+
+      # Use prebuilt osgGeo from its own snap part and seed the location where
+      # OpendTect expects it, so in-tree osgGeo configure/build is skipped.
+      osggeo_ext_dir="$CRAFT_PART_BUILD/external/osgGeo"
+      mkdir -p "$osggeo_ext_dir/inst"
+      if [ -d "$CRAFT_STAGE/usr/local/osggeo" ]; then
+        rm -rf "$osggeo_ext_dir/inst"
+        mkdir -p "$osggeo_ext_dir"
+        cp -a "$CRAFT_STAGE/usr/local/osggeo" "$osggeo_ext_dir/inst"
+        : > "$osggeo_ext_dir/CMakeCache.txt"
+      fi
+
+      # Run the default cmake build for this part.
+      craftctl default
+
+      # OpendTect unsets QT_PLUGIN_PATH in uiMain::cleanQtOSEnv(), then Qt
+      # searches for platform plugins under <binary-dir>/platforms.
+      # Copy Qt6 platform plugins there so xcb/wayland are always discoverable.
+      qt_plugins_base="$CRAFT_STAGE/usr/local/qt6/plugins"
+      od_bin_dir="$CRAFT_PART_INSTALL/usr/local/bin/lux64/Release"
+      if [ -d "$qt_plugins_base" ] && [ -d "$od_bin_dir" ]; then
+        mkdir -p "$od_bin_dir/platforms" "$od_bin_dir/xcbglintegrations"
+        cp -a "$qt_plugins_base/platforms/." "$od_bin_dir/platforms/" 2>/dev/null || true
+        cp -a "$qt_plugins_base/xcbglintegrations/." "$od_bin_dir/xcbglintegrations/" 2>/dev/null || true
+      fi
+
+      # Wrapper for desktop launch inside snap.
+      # Bypasses od_exec (csh) to avoid csh startup files clearing QT env vars.
+      # Replicates what od_exec does: set DTECT_APPL, XAPPLRESDIR, PATH, then
+      # exec the binary directly from sh.
+      printf '%s\n' \
+        '#!/bin/sh' \
+        'DTECT_APPL="$SNAP/usr/local"' \
+        'BINDIR="$DTECT_APPL/bin/lux64/Release"' \
+        'export HDIR=lux' \
+        'export DTECT_APPL' \
+        'export XAPPLRESDIR="$DTECT_APPL/data"' \
+        'export PATH="$BINDIR:$SNAP/usr/local/bin:$PATH"' \
+        'export LD_LIBRARY_PATH="$SNAP/usr/local/qt6/lib:$LD_LIBRARY_PATH"' \
+        'unset QTDIR' \
+        '# Clear stale GIO module cache from host.' \
+        'rm -rf ~/.cache/gio-modules' \
+        'export GIO_MODULE_DIR=/dev/null' \
+        'unset GIO_EXTRA_MODULES' \
+        '# OSG requires GLX; Wayland shell-integration plugins not in snap.' \
+        '# Always use XCB (XWayland) and route GL through GLX.' \
+        'export QT_QPA_PLATFORM=xcb' \
+        'export QT_XCB_GL_INTEGRATION=glx' \
+        'exec "$BINDIR/od_main" "$@"' \
+        > "$CRAFT_PART_INSTALL/usr/local/bin/od_snap_launcher"
+      chmod +x "$CRAFT_PART_INSTALL/usr/local/bin/od_snap_launcher"
+
+    cmake-parameters:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DOpenGL_GL_PREFERENCE=LEGACY
+      - -DCMAKE_PREFIX_PATH=$CRAFT_STAGE/usr/local/qt6
+      - -DOSG_ROOT=/usr
+      - -DOD_NO_OSG=OFF
+      - -DUSE_QtWebEngine=OFF
+
+    build-packages:
+      # Build essentials
+      - cmake
+      - g++
+      - make
+      - git
+      - openssh-client
+      - python3
+      - pkg-config
+
+      # Graphics and display
+      - libgl-dev
+      - libglu1-mesa-dev
+      - libxkbcommon-x11-dev
+      - libxcb-icccm4-dev
+      - libxcb-image0-dev
+      - libxcb-keysyms1-dev
+      - libxcb-render-util0-dev
+      - libxcb-randr0-dev
+      - libxcb-shape0-dev
+      - libxcb-sync-dev
+      - libxcb-util-dev
+      - libxcb-xfixes0-dev
+      - libxcb-xkb-dev
+
+      # Third-party libraries
+      - libopenscenegraph-dev
+      - libhdf5-dev
+      - libproj-dev
+      - libsqlite3-dev
+      - libssl-dev
+      - libcups2-dev
+      - zlib1g-dev
+
+    stage-packages:
+      # Third-party runtime libraries
+      - libopenscenegraph161
+      - libopenthreads21
+      - libhdf5-cpp-103-1t64
+      - libhdf5-hl-100t64
+      - libproj25
+      - libsqlite3-0
+      - libssl3t64
+
+      # Display and graphics
+      - libgl1
+      - libglu1-mesa
+      - libdrm-common
+      - libdrm2
+      - libxcb-cursor0
+      - libfreetype6
+      - libfontconfig1
+
+      # Misc runtime dependencies
+      - zlib1g
+      - libdouble-conversion3
+      - libb2-1
+      - libzstd1
+      - libjpeg-turbo-progs
+      - libjpeg8
+      - libpng16-16t64
+      - tcsh
+
+    prime:
+      # Prefer the gnome-platform SVG stack to avoid loader/symbol mismatches.
+      - -usr/lib/*/librsvg-2.so*
+      # Exclude the GIO libproxy module: it needs libpxbackend-1.0.so which is
+      # not staged. Excluding it prevents it being cached under
+      # ~/snap/opendtect/common/.cache/gio-modules/ and failing at startup.
+      - -usr/lib/*/gio/modules/libgiolibproxy.so

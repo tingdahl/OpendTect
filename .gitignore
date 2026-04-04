@@ -150,3 +150,6 @@ x64
 
 # Mac
 
+# Snaps
+*.snap
+snap/*.md
