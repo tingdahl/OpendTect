@@ -1,0 +1,29 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "@EXEC_NAME@ (@VSCODE_CONFIG@)",
+            "type": "@VSCODE_DEBUGGER@",
+            "request": "launch",
+            "program": "@VSCODE_PROGRAM@",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "@VSCODE_CWD@",
+            "@VSCODE_ENVKEYWORD@": [
+                {
+                    "name": "DTECT_APPL",
+                    "value": "@OD_BINARY_BASEDIR@"
+                },
+                {
+                    "name": "OD_USER_PLUGIN_DIR",
+                    "value": "@CMAKE_BINARY_DIR@"
+                },
+                {
+                    "name": "PATH",
+                    "value": "@OD_BINARY_BASEDIR@/@OD_RUNTIME_DIRECTORY@@VSCODE_RUNTIMEPATH@@CMAKE_BINARY_DIR@/@OD_RUNTIME_DIRECTORY@"
+                }
+            ],
+            "console": "integratedTerminal"
+        }
+    ]
+}

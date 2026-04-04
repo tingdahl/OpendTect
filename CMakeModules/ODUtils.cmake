@@ -208,7 +208,7 @@ function( get_link_libraries OUTPUT_LIST TARGET )
 	    endif()
 	endif()
     endforeach()
-    set( VISISTED_TARGETS ${VISITED_TARGETS} PARENT_SCOPE )
+    set( VISITED_TARGETS ${VISITED_TARGETS} PARENT_SCOPE )
     set( ${OUTPUT_LIST} ${LIB_LIST} PARENT_SCOPE )
 
 endfunction()
@@ -726,6 +726,87 @@ function (get_template_filepath template_name template_filepath)
     set( ${template_filepath} "${_template_filepath}" PARENT_SCOPE )
 endfunction(get_template_filepath)
 
+function( OD_CREATE_VSCODE_LAUNCHERS )
+    set( _options )
+    set( _one_value_args )
+    set( _multi_value_args EXECUTABLES )
+    cmake_parse_arguments( _arg "${_options}" "${_one_value_args}" "${_multi_value_args}" ${ARGN} )
+
+    if ( NOT _arg_EXECUTABLES )
+	message( WARNING "OD_CREATE_VSCODE_LAUNCHERS called without EXECUTABLES" )
+	return()
+    endif()
+
+    list( REMOVE_DUPLICATES _arg_EXECUTABLES )
+
+    set( VSCODE_DIR "${OpendTect_DIR}/.vscode" )
+    if ( NOT EXISTS "${VSCODE_DIR}" )
+	file( MAKE_DIRECTORY "${VSCODE_DIR}" )
+    endif()
+
+    # Create launch configurations
+    set( VSCODE_LAUNCH_TEMPLATE "${OpendTect_DIR}/CMakeModules/launcher-templates/vscode_launch.in" )
+    if ( NOT VSCODE_DEBUGGER )
+	if ( WIN32 )
+	    set( VSCODE_DEBUGGER "cppvsdbg" )
+	else()
+            set( VSCODE_DEBUGGER "cppdbg" )
+	endif()
+    endif()
+    if ( ${VSCODE_DEBUGGER} STREQUAL "lldb" )
+	set( VSCODE_ENVKEYWORD "env" )
+    else()
+	set( VSCODE_ENVKEYWORD "environment" )
+    endif()
+
+    # Build runtime PATH from external library directories
+    if ( WIN32 )
+	set( _pathsep "$<SEMICOLON>" )
+    else()
+	set( _pathsep ":" )
+    endif()
+    set( VSCODE_RUNTIMEPATH "" )
+    foreach( _dir ${OD_MODULE_RUNTIMEPATH} )
+	string( APPEND VSCODE_RUNTIMEPATH "${_pathsep}${_dir}" )
+    endforeach()
+    string( APPEND VSCODE_RUNTIMEPATH "${_pathsep}" )
+
+    set( VSCODE_CWD "${CMAKE_BINARY_DIR}" )
+
+    # Determine configuration list: multi-config vs single-config generators
+    if ( CMAKE_CONFIGURATION_TYPES )
+	set( _configs ${CMAKE_CONFIGURATION_TYPES} )
+    elseif ( CMAKE_BUILD_TYPE )
+	set( _configs ${CMAKE_BUILD_TYPE} )
+    else()
+	set( _configs "Debug" )
+    endif()
+
+    foreach( OD_EXECUTABLE ${_arg_EXECUTABLES} )
+	get_filename_component( EXEC_NAME ${OD_EXECUTABLE} NAME_WE )
+	if ( NOT TARGET ${EXEC_NAME} )
+	    continue()
+	endif()
+	set( VSCODE_PROGRAM "$<TARGET_FILE:${EXEC_NAME}>" )
+	set( LAUNCH_CONFIG_TMP "${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/vscode_${EXEC_NAME}.launch.json" )
+	foreach( _config ${_configs} )
+	    set( VSCODE_CONFIG "${_config}" )
+	    configure_file( "${VSCODE_LAUNCH_TEMPLATE}" "${LAUNCH_CONFIG_TMP}.${_config}" @ONLY )
+	    if ( CMAKE_CONFIGURATION_TYPES )
+		set( LAUNCH_CONFIG_FILE "${VSCODE_DIR}/${EXEC_NAME}.${_config}.launch.json" )
+		file( GENERATE
+		      OUTPUT "${LAUNCH_CONFIG_FILE}"
+		      INPUT "${LAUNCH_CONFIG_TMP}.${_config}"
+		      CONDITION $<CONFIG:${_config}> )
+	    else()
+		set( LAUNCH_CONFIG_FILE "${VSCODE_DIR}/${EXEC_NAME}.launch.json" )
+		file( GENERATE
+		      OUTPUT "${LAUNCH_CONFIG_FILE}"
+		      INPUT "${LAUNCH_CONFIG_TMP}.${_config}" )
+	    endif()
+	endforeach()
+    endforeach()
+endfunction()
 
 macro( testprops tgt )
     set(props
