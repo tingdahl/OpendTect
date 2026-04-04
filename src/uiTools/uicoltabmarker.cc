@@ -267,6 +267,7 @@ uiColTabMarkerCanvas::uiColTabMarkerCanvas( uiParent* p, ColTab::Sequence& ctab,
 
 uiColTabMarkerCanvas::~uiColTabMarkerCanvas()
 {
+    detachAllNotifiers();
     delete w2ui_;
 }
 

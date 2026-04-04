@@ -55,13 +55,12 @@ static const int sPosColorCol = 3;
 static const int sColorCol = 1;
 
 uiTranspValuesDlg::uiTranspValuesDlg( uiParent* p,
-    ColTab::Sequence& ctab,
-    const Interval<float>& ctabrange )
+		    ColTab::Sequence& ctab, const Interval<float>& ctabrange )
     : uiDialog(p,Setup(tr("View Point Values"),mNoHelpKey))
-    , markersChanged(this)
     , valuesChanged(this)
     , segmentInserted(this)
     , segmentRemoved(this)
+    , markersChanged(this)
     , ctab_(ctab)
     , ctabrange_(ctabrange)
 {
@@ -913,9 +912,9 @@ uiColorTableMan::uiColorTableMan( uiParent* p, ColTab::Sequence& ctab,
     , tableChanged(this)
     , rangeChanged(this)
     , ctab_(ctab)
-    , segidx_(0)
     , segctab_(new ColTab::Sequence)
     , ctabrange_(Interval<float>::udf())
+    , segidx_(0)
     , enabletrans_(enabletrans)
 {
     setShrinkAllowed( false );
@@ -1043,8 +1042,6 @@ uiColorTableMan::uiColorTableMan( uiParent* p, ColTab::Sequence& ctab,
 		   uiColorTableMan::rightClickTranspCB );
     }
 
-
-
     auto* butgrp = new uiButtonGroup( this, "actions", OD::Horizontal );
     butgrp->attach( alignedBelow, leftgrp );
 
@@ -1078,7 +1075,6 @@ uiColorTableMan::uiColorTableMan( uiParent* p, ColTab::Sequence& ctab,
     mAttachCB( settoanchbut->activated,
 	       uiColorTableMan::setPtsToAnchorSegmentsCB );
     settoanchbut->attach( leftOf, flipbut );
-    settoanchbut->attach( rightTo, butgrp );
 
     mAttachCB( markercanvas_->markerChanged, uiColorTableMan::markerChangeCB );
     mAttachCB( ctab_.colorChanged, uiColorTableMan::sequenceChangeCB );

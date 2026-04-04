@@ -79,22 +79,22 @@ protected:
 			uiColorTable(const ColTab::Sequence&);
 
     void		createFields(uiParent*,OD::Orientation,bool withminmax);
-    bool		enabmanage_;
-    bool		enabclipdlg_;
+    bool		enabmanage_				= true;
+    bool		enabclipdlg_				= true;
 
     ColTab::MapperSetup& mapsetup_;
     ColTab::Sequence&	coltabseq_;
 
     TypeSet<float>	histogram_;
-    uiParent*		parent_			    = nullptr;
-    uiColorTableCanvas*	canvas_;
-    uiLineEdit*		minfld_			    = nullptr;
-    uiLineEdit*		maxfld_			    = nullptr;
-    uiColorTableSel*	selfld_;
-    uiAutoRangeClipDlg* scalingdlg_		    = nullptr;
-    uiColorTableMan*	coltabman_		    = nullptr;
+    uiParent*		parent_					= nullptr;
+    uiColorTableCanvas*	canvas_					= nullptr;
+    uiLineEdit*		minfld_					= nullptr;
+    uiLineEdit*		maxfld_					= nullptr;
+    uiColorTableSel*	selfld_					= nullptr;
+    uiAutoRangeClipDlg* scalingdlg_				= nullptr;
+    uiColorTableMan*	coltabman_				= nullptr;
 
-    bool		enabletrans_;
+    bool		enabletrans_				= true;
 
     void		updateRgFld();
     void		canvasreDraw(CallBacker*);
@@ -111,7 +111,9 @@ protected:
     void		makeSymmetrical(CallBacker*);
     void		colTabChgdCB(CallBacker*);
     void		colTabManChgd(CallBacker*);
+    void		colTabManClosedCB(CallBacker*);
     void		numberFormatChgdCB(CallBacker*);
+    void		beforeSurveyChangeCB(CallBacker*);
 
     bool		isEditable() const	{ return maxfld_; }
 };

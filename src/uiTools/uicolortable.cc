@@ -11,6 +11,7 @@ ________________________________________________________________________
 
 #include "coltab.h"
 #include "coltabsequence.h"
+#include "ioman.h"
 #include "mouseevent.h"
 #include "settings.h"
 
@@ -345,19 +346,14 @@ static int sExtraFieldWidthg = 6;
 uiColorTable::uiColorTable( const ColTab::Sequence& colseq )
     : seqChanged(this)
     , scaleChanged(this)
-    , enabmanage_(true)
-    , enabclipdlg_(true)
     , mapsetup_( *new ColTab::MapperSetup(ColTab::MapperSetup()
 		.type(ColTab::MapperSetup::Auto)
 		.symmidval(mUdf(float))
 		.cliprate(ColTab::defClipRate())) )
     , coltabseq_(*new ColTab::Sequence(colseq))
-    , parent_(nullptr)
-    , minfld_(nullptr)
-    , maxfld_(nullptr)
-    , scalingdlg_(nullptr)
-    , enabletrans_(true)
-{}
+{
+    mAttachCB( IOM().surveyToBeChanged, uiColorTable::beforeSurveyChangeCB );
+}
 
 
 void uiColorTable::createFields( uiParent* parnt, OD::Orientation orient,
@@ -416,6 +412,12 @@ uiColorTable::~uiColorTable()
     delete &coltabseq_;
     delete &mapsetup_;
     delete scalingdlg_;
+}
+
+
+void uiColorTable::beforeSurveyChangeCB( CallBacker* )
+{
+    closeAndNullPtr( coltabman_ );
 }
 
 
@@ -707,18 +709,29 @@ void uiColorTable::enableTransparencyEdit( bool yn )
 
 void uiColorTable::doManage( CallBacker* )
 {
-    mDynamicCastGet( uiToolBar*, toolbar, parent_ );
-    uiParent* dlgparent = toolbar ? toolbar->parent() : parent_;
-    coltabman_ = new uiColorTableMan( dlgparent, coltabseq_, enabletrans_);
+    if ( !coltabman_ )
+    {
+	mDynamicCastGet( uiToolBar*, toolbar, parent_ );
+	uiParent* dlgparent = toolbar ? toolbar->parent() : parent_;
+	coltabman_ = new uiColorTableMan( dlgparent, coltabseq_, enabletrans_);
+	coltabman_->setModal( false );
 
-    mAttachCB( coltabman_->tableChanged, uiColorTable::colTabManChgd );
-    mAttachCB( coltabman_->tableAddRem, uiColorTable::tableAdded );
-    mAttachCB( coltabman_->rangeChanged, uiColorTable::colTabManRgChangeCB );
+	mAttachCB( coltabman_->tableChanged, uiColorTable::colTabManChgd );
+	mAttachCB( coltabman_->tableAddRem, uiColorTable::tableAdded );
+	mAttachCB( coltabman_->rangeChanged, uiColorTable::colTabManRgChangeCB );
+	mAttachCB( coltabman_->windowClosed, uiColorTable::colTabManClosedCB );
+    }
 
     const float minval = minfld_ ? minfld_->getFValue() : mUdf(float);
     const float maxval = maxfld_ ? maxfld_->getFValue() : mUdf(float);
     coltabman_->setHistogram( histogram_, Interval<float>(minval,maxval) );
-    coltabman_->go();
+    coltabman_->show();
+}
+
+
+void uiColorTable::colTabManClosedCB( CallBacker* )
+{
+    coltabman_ = nullptr;
 }
 
 
