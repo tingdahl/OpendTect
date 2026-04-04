@@ -10,6 +10,8 @@ description: |
   analyzing and interpreting 2D, 3D and 4D seismic and Ground Penetrating
   Radar (GPR) data. OpendTect runs on Windows, macOS and Linux platforms.
 
+icon: share/od.png
+
 grade: devel
 confinement: strict
 
@@ -17,9 +19,6 @@ platforms:
   amd64:
     build-on: amd64
     build-for: amd64
-  arm64:
-    build-on: arm64
-    build-for: arm64
 
 apps:
   opendtect:
@@ -233,6 +232,9 @@ parts:
     override-build: |
       set -eu
 
+      export CFLAGS="${CFLAGS:+$CFLAGS }-march=x86-64-v3"
+      export CXXFLAGS="${CXXFLAGS:+$CXXFLAGS }-march=x86-64-v3"
+
       mkdir -p build
       cd build
 
@@ -311,11 +313,9 @@ parts:
       rm -rf "$srcdir/CMakeFiles" "$srcdir/Testing" "$srcdir/inst"
       rm -f "$srcdir"/build*.ninja "$srcdir"/.ninja_deps "$srcdir"/.ninja_log
 
-      # Match main build CPU tuning for x86_64 while keeping arm64 portable.
-      if [ "$(uname -m)" = "x86_64" ]; then
-        export CFLAGS="${CFLAGS:+$CFLAGS }-march=x86-64-v3"
-        export CXXFLAGS="${CXXFLAGS:+$CXXFLAGS }-march=x86-64-v3"
-      fi
+      # Tune for the baseline x86-64-v3 target.
+      export CFLAGS="${CFLAGS:+$CFLAGS }-march=x86-64-v3"
+      export CXXFLAGS="${CXXFLAGS:+$CXXFLAGS }-march=x86-64-v3"
 
       craftctl default
     cmake-parameters:
@@ -363,12 +363,9 @@ parts:
         fi
       fi
 
-      # Enable modern CPU tuning for x86_64 builds.
-      # Keep arm64 builds portable by not setting x86-specific flags there.
-      if [ "$(uname -m)" = "x86_64" ]; then
-        export CFLAGS="${CFLAGS:+$CFLAGS }-march=x86-64-v3"
-        export CXXFLAGS="${CXXFLAGS:+$CXXFLAGS }-march=x86-64-v3"
-      fi
+      # Tune for the baseline x86-64-v3 target.
+      export CFLAGS="${CFLAGS:+$CFLAGS }-march=x86-64-v3"
+      export CXXFLAGS="${CXXFLAGS:+$CXXFLAGS }-march=x86-64-v3"
 
       # The local workspace may contain generated CMake artifacts. Because
       # source-type is local, those files are copied into CRAFT_PART_SRC and
@@ -423,8 +420,9 @@ parts:
         'export PATH="$BINDIR:$SNAP/usr/local/bin:$PATH"' \
         'export LD_LIBRARY_PATH="$SNAP/usr/local/qt6/lib:$LD_LIBRARY_PATH"' \
         'unset QTDIR' \
-        '# Clear stale GIO module cache from host.' \
-        'rm -rf ~/.cache/gio-modules' \
+        '# Clear stale GIO module cache (host and snap-common) to avoid' \
+        '# "Failed to load module" warnings from removed/excluded GIO plugins.' \
+        'rm -rf ~/.cache/gio-modules "${SNAP_USER_COMMON}/.cache/gio-modules"' \
         'export GIO_MODULE_DIR=/dev/null' \
         'unset GIO_EXTRA_MODULES' \
         '# OSG requires GLX; Wayland shell-integration plugins not in snap.' \
