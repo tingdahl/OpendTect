@@ -303,8 +303,8 @@ parts:
 
   osggeo:
     plugin: cmake
-    source: external/osgGeo
-    source-type: local
+    source: https://github.com/OpendTect/osgGeo.git
+    source-branch: main
     override-build: |
       set -eu
 
