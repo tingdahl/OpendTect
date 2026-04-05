@@ -25,6 +25,7 @@ apps:
     command: usr/local/bin/od_snap_launcher
     extensions: [gnome]
     common-id: com.dgbes.opendtect
+    desktop: usr/share/applications/opendtect.desktop
     environment:
       PATH: $SNAP/usr/local/bin:$SNAP/usr/local/bin/lux64/Release:$PATH
       LD_LIBRARY_PATH: $SNAP/usr/local/qt6/lib:$LD_LIBRARY_PATH
@@ -34,6 +35,7 @@ apps:
     plugs:
       - home
       - network
+      - mount-observe
       - removable-media
 
   od-batchhosts:
@@ -425,6 +427,9 @@ parts:
         'rm -rf ~/.cache/gio-modules "${SNAP_USER_COMMON}/.cache/gio-modules"' \
         'export GIO_MODULE_DIR=/dev/null' \
         'unset GIO_EXTRA_MODULES' \
+        '# Avoid benign Qt ICE/session-manager socket warnings in strict snaps.' \
+        'unset SESSION_MANAGER' \
+        'unset ICEAUTHORITY' \
         '# OSG requires GLX; Wayland shell-integration plugins not in snap.' \
         '# Always use XCB (XWayland) and route GL through GLX.' \
         'export QT_QPA_PLATFORM=xcb' \
@@ -432,6 +437,20 @@ parts:
         'exec "$BINDIR/od_main" "$@"' \
         > "$CRAFT_PART_INSTALL/usr/local/bin/od_snap_launcher"
       chmod +x "$CRAFT_PART_INSTALL/usr/local/bin/od_snap_launcher"
+
+      # Install a desktop launcher so the app appears in desktop menus.
+      mkdir -p "$CRAFT_PART_INSTALL/usr/share/applications"
+      printf '%s\n' \
+        '[Desktop Entry]' \
+        'Type=Application' \
+        'Name=OpendTect' \
+        'Comment=Seismic interpretation system' \
+        'Exec=opendtect %U' \
+        'Icon=${SNAP}/meta/gui/icon.png' \
+        'Terminal=false' \
+        'Categories=Science;Education;Graphics;' \
+        'StartupNotify=true' \
+        > "$CRAFT_PART_INSTALL/usr/share/applications/opendtect.desktop"
 
     cmake-parameters:
       - -DCMAKE_BUILD_TYPE=Release
