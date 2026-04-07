@@ -229,7 +229,7 @@ layout:
 parts:
   qt6:
     plugin: nil
-    source: https://download.qt.io/official_releases/qt/6.8/6.8.3/single/qt-everywhere-src-6.8.3.tar.xz
+    source: https://mirror.accum.se/mirror/qt.io/qtproject/official_releases/qt/6.8/6.8.3/single/qt-everywhere-src-6.8.3.tar.xz
     source-type: tar
     override-build: |
       set -eu
