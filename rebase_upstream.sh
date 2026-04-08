@@ -1,13 +1,17 @@
 #!/bin/bash
 
-UPSTREAM=upstream
 
 if (( $# != 1 )); then
     >&2 echo "Syntax: $0 <branch>"
     exit 1
 fi
 
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+cd ${SCRIPT_DIR}
+
+UPSTREAM=upstream
 BRANCH=$1
+
 
 #Check that git exists
 if ! command -v git &> /dev/null
