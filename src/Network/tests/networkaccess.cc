@@ -71,21 +71,29 @@ bool testPing()
 }
 
 
-bool testDownloadToBuffer()
+bool testDownloadToString()
 {
     const char* url = "https://opendtect.org/dlsites.txt";
+    BufferString bs;
+    const uiRetVal uirv = Network::downloadToString( url, bs );
+    mRunStandardTestWithError( uirv.isOK(),
+	BufferString(prefix_, "Download to string"), uirv.getText() );
+    mRunStandardTest( bs.size()==54,
+	      BufferString(prefix_, "Download to string size") );
+
     DataBuffer db( 1000, 4 );
     uiString err;
-
-    uiRetVal uirv = Network::downloadToBuffer_( url, db );
-    mRunStandardTestWithError( uirv.isOK(),
+    mStartAllowDeprecatedSection
+	uiRetVal uirv1 = Network::downloadToBuffer_( url, db );
+    mRunStandardTestWithError( uirv1.isOK(),
 	    BufferString(prefix_, "downloadToBuffer_(): Download to buffer"),
 	    uirv.getText() );
     mRunStandardTestWithError( Network::downloadToBuffer( url, db, err ),
 	    BufferString(prefix_, "downloadToBuffer(): Download to buffer"),
 	    uirv.getText() );
     mRunStandardTest( db.size()==54,
-		      BufferString(prefix_, "Download to buffer size") );
+		     BufferString(prefix_, "Download to buffer size") );
+    mStopAllowDeprecatedSection
 
     return true;
 }
@@ -159,10 +167,14 @@ bool testDownloadToFile()
     const uiRetVal uirv = Network::downloadFile_( url, tempfile_.fullPath() );
     const uiString err = uirv.messages().cat();
     uiString err1;
+
+    mStartAllowDeprecatedSection
     mRunStandardTestWithError( Network::downloadFile(url,
-		tempfile_.fullPath(), err1),
-		BufferString(prefix_, "downloadFile(): Download to file"),
-		toString(err) );
+		    tempfile_.fullPath(), err1),
+		    BufferString(prefix_, "downloadFile(): Download to file"),
+		    toString(err) );
+    mStopAllowDeprecatedSection
+
     mRunStandardTestWithError( uirv.isOK(),
 		BufferString(prefix_, "downloadFile_(): Download to file"),
 		toString(err) );
@@ -190,14 +202,17 @@ bool testDownloadFiles()
 				tempfile1_.fullPath() );
     uiString err;
 
+    mStartAllowDeprecatedSection
     mRunStandardTestWithError( Network::downloadFiles( pkgurls,
-		tempfile1_.fullPath(), err ),
-		BufferString(prefix_, "downloadFiles(), Good urls"),
-		toString(err) );
+			    tempfile1_.fullPath(), err ),
+			    BufferString(prefix_, "downloadFiles(), Good urls"),
+			    toString(err) );
     mRunStandardTestWithError( !Network::downloadFiles( failpkgurls,
-		tempfile1_.fullPath(), err ),
-		BufferString(prefix_, "downloadFiles(), Fail urls"),
-		toString(err) );
+			    tempfile1_.fullPath(), err ),
+			    BufferString(prefix_, "downloadFiles(), Fail urls"),
+			    toString(err) );
+    mStopAllowDeprecatedSection
+
     mRunStandardTestWithError( uirv1.isOK(),
 	BufferString(prefix_, "Download files, Good urls, CanFail: False"),
 		     uirv1.getText() );
@@ -268,7 +283,7 @@ bool runTests()
     if ( !testPing() )
 	return false;
 
-    if ( !testDownloadToBuffer() )
+    if ( !testDownloadToString() )
 	return false;
 
     if ( !testDownloadToFile() )
