@@ -29,24 +29,6 @@ namespace Network
     class HttpRequestProcess;
 
 /*!< Functions to download/upload one or more files/data using HTTP protocol*/
-
-    mGlobal(Network) bool   downloadFile(const char* url,const char* outpath,
-					uiString& errmsg,TaskRunner* =nullptr);
-
-    mGlobal(Network) bool   downloadFiles(BufferStringSet& urls,
-					  const char* outpath,
-					  uiString& errmsg,
-					  TaskRunner* =nullptr);
-
-    mGlobal(Network) bool   downloadFiles(BufferStringSet& urls,
-					  BufferStringSet& outpaths,
-					  uiString& errmsg,
-					  TaskRunner* =nullptr);
-
-    mGlobal(Network) bool   downloadToBuffer(const char* url,DataBuffer&,
-					     uiString& errmsg,
-					     TaskRunner* =nullptr);
-
     mGlobal(Network) uiRetVal downloadFile_(const char* url,
 					    const char* outpath,
 					    TaskRunner* =nullptr);
@@ -61,8 +43,7 @@ namespace Network
 					     TaskRunner* =nullptr,
 					     bool canfail =false);
 
-    mGlobal(Network) uiRetVal downloadToBuffer_(const char* url,
-						DataBuffer&,
+    mGlobal(Network) uiRetVal downloadToString(const char* url,BufferString&,
 						TaskRunner* =nullptr);
 
     mGlobal(Network) bool   uploadFile(const char* url,const char* localfname,
@@ -108,6 +89,29 @@ namespace Network
     mGlobal(Network) od_int64	getFileSize(const char*);
     mGlobal(Network) bool	getContent(const char*,BufferString&);
 
+    mDeprecated("Use downloadToString")
+    mGlobal(Network) uiRetVal downloadToBuffer_(const char* url,DataBuffer&,
+						   TaskRunner* =nullptr);
+    mDeprecated("Use downloadFile_")
+    mGlobal(Network) bool   downloadFile(const char* url,const char* outpath,
+					uiString& errmsg,TaskRunner* =nullptr);
+    mDeprecated("Use downloadFiles_")
+    mGlobal(Network) bool   downloadFiles(BufferStringSet& urls,
+					  const char* outpath,
+					  uiString& errmsg,
+					  TaskRunner* =nullptr);
+    mDeprecated("Use downloadFiles_")
+    mGlobal(Network) bool   downloadFiles(BufferStringSet& urls,
+					  BufferStringSet& outpaths,
+					  uiString& errmsg,
+					  TaskRunner* =nullptr);
+
+    mDeprecated("Use downloadToString")
+    mGlobal(Network) bool   downloadToBuffer(const char* url,DataBuffer&,
+					     uiString& errmsg,
+					     TaskRunner* =nullptr);
+
+
 } // namespace Network
 
 
@@ -138,10 +142,10 @@ protected:
     bool		writeDataToFile(const char* buffer,int size);
     bool		writeDataToBuffer(const char* buffer,int size);
 
-    bool		initneeded_ = true;
+    bool	    initneeded_ = true;
     BufferStringSet	urls_;
     BufferStringSet	saveaspaths_;
-    int			nrfilesdownloaded_ = 0;
+    int		    nrfilesdownloaded_	= 0;
     DataBuffer*		databuffer_ = nullptr;
     od_ostream*		osd_ = nullptr;
 
